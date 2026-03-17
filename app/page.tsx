@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listRecords } from "@/lib/records";
+import type { RecordItem } from "@/lib/records";
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -10,11 +11,10 @@ function formatDate(dateStr: string) {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: { q?: string };
 }) {
-  const sp = await searchParams;
-  const q = (sp.q ?? "").trim();
-  let records: Awaited<ReturnType<typeof listRecords>> = [];
+  const q = (searchParams.q ?? "").trim();
+  let records: RecordItem[] = [];
   let dbError: string | null = null;
   try {
     records = await listRecords({ q });

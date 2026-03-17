@@ -1,23 +1,14 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
-
-type StoredRecord = {
-  id: string;
-  meeting_date: string;
-  title: string;
-  attendees: string;
-  content: string;
-  photo_urls: string[];
-  created_at: string;
-};
+import type { RecordItem } from "./records";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "records.json");
 
-async function readAll(): Promise<StoredRecord[]> {
+async function readAll(): Promise<RecordItem[]> {
   try {
     const raw = await readFile(DATA_FILE, "utf8");
-    const parsed = JSON.parse(raw) as StoredRecord[];
+    const parsed = JSON.parse(raw) as RecordItem[];
     if (!Array.isArray(parsed)) return [];
     return parsed;
   } catch {
@@ -25,12 +16,12 @@ async function readAll(): Promise<StoredRecord[]> {
   }
 }
 
-async function writeAll(records: StoredRecord[]) {
+async function writeAll(records: RecordItem[]) {
   await mkdir(DATA_DIR, { recursive: true });
   await writeFile(DATA_FILE, JSON.stringify(records, null, 2), "utf8");
 }
 
-export async function localCreateRecord(record: StoredRecord) {
+export async function localCreateRecord(record: RecordItem) {
   const all = await readAll();
   all.unshift(record);
   await writeAll(all);
