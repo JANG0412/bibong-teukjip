@@ -34,6 +34,14 @@ export async function localCreateRecord(record: RecordItem) {
   return record;
 }
 
+export async function localDeleteRecord(id: string) {
+  const all = await readAll();
+  const filtered = all.filter((r) => r.id !== id);
+  if (all.length !== filtered.length) {
+    await writeAll(filtered);
+  }
+}
+
 export async function localListRecords(q?: string) {
   const all = await readAll();
   const keyword = q?.trim();

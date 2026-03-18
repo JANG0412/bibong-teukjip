@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listRecords } from "@/lib/records";
+import { deleteRecordAction } from "./actions";
 import type { RecordItem } from "@/lib/records";
 
 function formatDate(dateStr: string) {
@@ -108,9 +109,25 @@ export default async function Home({
                 <h2 className="text-lg font-semibold tracking-tight">
                   {r.title}
                 </h2>
-                <div className="text-sm text-zinc-700">
-                  <span className="font-semibold">참석자</span>{" "}
-                  <span className="text-zinc-600">{r.attendees}</span>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-zinc-700">
+                    <span className="font-semibold">참석자</span>{" "}
+                    <span className="text-zinc-600">{r.attendees}</span>
+                  </div>
+                  <form action={deleteRecordAction}>
+                    <input type="hidden" name="id" value={r.id} />
+                    <button
+                      type="submit"
+                      className="rounded-xl px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 active:translate-y-px"
+                      onClick={(e) => {
+                        if (!confirm("정말 이 기록을 삭제하시겠습니까?")) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </form>
                 </div>
               </div>
 

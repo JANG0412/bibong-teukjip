@@ -3,7 +3,7 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { redirect } from "next/navigation";
-import { createRecord } from "@/lib/records";
+import { createRecord, deleteRecord } from "@/lib/records";
 import { randomUUID } from "crypto";
 import { put } from "@vercel/blob";
 
@@ -77,6 +77,21 @@ export async function createRecordAction(formData: FormData) {
       throw new Error(`저장 실패: ${error.message}`);
     }
     throw new Error("알 수 없는 오류로 저장에 실패했습니다.");
+  }
+}
+
+export async function deleteRecordAction(formData: FormData) {
+  const id = asString(formData.get("id"));
+  if (!id) return;
+
+  try {
+    await deleteRecord(id);
+  } catch (error) {
+    console.error("Delete failed:", error);
+    if (error instanceof Error) {
+      throw new Error(`삭제 실패: ${error.message}`);
+    }
+    throw new Error("알 수 없는 오류로 삭제에 실패했습니다.");
   }
   redirect("/");
 }

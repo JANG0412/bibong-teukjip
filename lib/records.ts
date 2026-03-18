@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { getPool } from "./db";
 import { ensureSchema } from "./schema";
-import { localCreateRecord, localListRecords } from "./localStore";
+import { localCreateRecord, localListRecords, localDeleteRecord } from "./localStore";
 
 export type RecordItem = {
   id: string;
@@ -81,3 +81,13 @@ export async function listRecords(params: { q?: string }): Promise<RecordItem[]>
   return rows;
 }
 
+export async function deleteRecord(id: string): Promise<void> {
+  const pool = getPool();
+  if (!pool) {
+    await localDeleteRecord(id);
+    return;
+  }
+
+  await ensureSchema();
+  await pool.query(`DELETE FROM records WHERE id = $1`, [id]);
+}
