@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { listRecords } from "@/lib/records";
-import type { RecordItem } from "@/lib/records";
+import { listRecords } from "@/lib/records.server";
+import type { RecordItem } from "@/lib/records.server";
 import { DeleteButton } from "@/components/DeleteButton";
 
 function formatDate(dateStr: string) {
