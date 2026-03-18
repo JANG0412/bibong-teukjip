@@ -13,6 +13,11 @@ export function EditForm({
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string>("");
 
+  // <input type="date"> requires YYYY-MM-DD format
+  const formattedDate = record.meeting_date 
+    ? new Date(record.meeting_date).toISOString().split("T")[0] 
+    : "";
+
   return (
     <form
       className="rounded-3xl border border-white/60 bg-white/70 p-5 shadow-sm backdrop-blur"
@@ -38,7 +43,7 @@ export function EditForm({
             name="meetingDate"
             type="date"
             required
-            defaultValue={record.meeting_date}
+            defaultValue={formattedDate}
             className="w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-sm outline-none ring-rose-200/60 focus:ring"
           />
         </label>
