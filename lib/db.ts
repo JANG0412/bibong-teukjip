@@ -36,9 +36,8 @@ export function getPool(): Pool | null {
         : undefined,
   });
 
-  if (process.env.NODE_ENV !== "production") {
-    globalThis.__bibongPool = pool;
-  }
+  // 캐시를 위해 전역 변수에 저장 (Vercel 등 서버리스 환경 포함)
+  globalThis.__bibongPool = pool;
 
   return pool;
 }

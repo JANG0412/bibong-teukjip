@@ -88,6 +88,5 @@ export async function deleteRecord(id: string): Promise<void> {
     return;
   }
 
-  await ensureSchema();
   await pool.query(`DELETE FROM records WHERE id = $1`, [id]);
 }
