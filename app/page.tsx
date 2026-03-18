@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { listRecords } from "@/lib/records";
-import { deleteRecordAction } from "./actions";
 import type { RecordItem } from "@/lib/records";
+import { DeleteButton } from "@/components/DeleteButton";
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -114,20 +114,7 @@ export default async function Home({
                     <span className="font-semibold">참석자</span>{" "}
                     <span className="text-zinc-600">{r.attendees}</span>
                   </div>
-                  <form action={deleteRecordAction}>
-                    <input type="hidden" name="id" value={r.id} />
-                    <button
-                      type="submit"
-                      className="rounded-xl px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 active:translate-y-px"
-                      onClick={(e) => {
-                        if (!confirm("정말 이 기록을 삭제하시겠습니까?")) {
-                          e.preventDefault();
-                        }
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </form>
+                  <DeleteButton id={r.id} />
                 </div>
               </div>
 
