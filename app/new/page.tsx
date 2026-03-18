@@ -1,5 +1,7 @@
 "use client";
 
+// Final UI Version: 1.0.1 - Removing photo uploads for real
+
 import { useState, useTransition } from "react";
 import { createRecordAction } from "../actions";
 
