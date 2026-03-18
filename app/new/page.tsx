@@ -12,6 +12,25 @@ export default function NewRecordPage() {
       <section className="rounded-3xl border border-white/60 bg-white/70 p-5 shadow-sm backdrop-blur">
         <h1 className="text-xl font-semibold tracking-tight">기록하기</h1>
         <p className="mt-1 text-sm text-zinc-600">
+          모임의 날짜, 제목, 참석자, 활동 내용을 남겨보세요.
+        </p>
+      </section>
+
+      <form
+        className="rounded-3xl border border-white/60 bg-white/70 p-5 shadow-sm backdrop-blur"
+        action={(formData) => {
+          setError("");
+          startTransition(async () => {
+            try {
+              await createRecordAction(formData);
+            } catch (e) {
+              setError(
+                e instanceof Error ? e.message : "저장 중 오류가 발생했어요.",
+              );
+            }
+          });
+        }}
+      >
         <div className="grid grid-cols-1 gap-4">
           <label className="space-y-2">
             <div className="text-sm font-semibold text-zinc-800">모임 날짜</div>
