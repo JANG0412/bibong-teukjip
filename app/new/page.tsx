@@ -12,25 +12,6 @@ export default function NewRecordPage() {
       <section className="rounded-3xl border border-white/60 bg-white/70 p-5 shadow-sm backdrop-blur">
         <h1 className="text-xl font-semibold tracking-tight">기록하기</h1>
         <p className="mt-1 text-sm text-zinc-600">
-          모임의 날짜, 제목, 참석자, 활동 내용, 사진을 남겨보세요.
-        </p>
-      </section>
-
-      <form
-        className="rounded-3xl border border-white/60 bg-white/70 p-5 shadow-sm backdrop-blur"
-        action={(formData) => {
-          setError("");
-          startTransition(async () => {
-            try {
-              await createRecordAction(formData);
-            } catch (e) {
-              setError(
-                e instanceof Error ? e.message : "저장 중 오류가 발생했어요.",
-              );
-            }
-          });
-        }}
-      >
         <div className="grid grid-cols-1 gap-4">
           <label className="space-y-2">
             <div className="text-sm font-semibold text-zinc-800">모임 날짜</div>
@@ -78,20 +59,6 @@ export default function NewRecordPage() {
               placeholder="무엇을 했고, 어떤 이야기를 나눴는지 기록해보세요."
               className="w-full resize-none rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-sm leading-7 outline-none ring-rose-200/60 placeholder:text-zinc-400 focus:ring"
             />
-          </label>
-
-          <label className="space-y-2">
-            <div className="text-sm font-semibold text-zinc-800">사진 업로드</div>
-            <input
-              name="photos"
-              type="file"
-              accept="image/*"
-              multiple
-              className="block w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-rose-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-rose-700 hover:file:bg-rose-200"
-            />
-            <div className="text-xs text-zinc-500">
-              이미지 파일만 저장돼요. (여러 장 가능)
-            </div>
           </label>
 
           {error ? (
