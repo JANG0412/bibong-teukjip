@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { getPool } from "./db";
 import { ensureSchema } from "./schema";
 import { localCreateRecord, localListRecords, localDeleteRecord, localGetRecord, localUpdateRecord, type RecordItem } from "./localStore";
+export type { RecordItem };
 
 export async function createRecord(input: {
   meetingDate: string;
