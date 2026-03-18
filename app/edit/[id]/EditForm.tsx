@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { RecordItem } from "@/lib/records.server";
+import type { RecordItem } from "../../../lib/localStore";
 
 export function EditForm({
   record,

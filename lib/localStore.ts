@@ -1,6 +1,14 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
-import type { RecordItem } from "./records";
+export type RecordItem = {
+  id: string;
+  meeting_date: string;
+  title: string;
+  attendees: string;
+  content: string;
+  photo_urls: string[];
+  created_at: string;
+};
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "records.json");

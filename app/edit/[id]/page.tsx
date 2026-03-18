@@ -1,4 +1,4 @@
-import { getRecord } from "@/lib/records.server";
+import { getRecord } from "../../../lib/records.server";
 import { updateRecordAction } from "../../actions";
 import { EditForm } from "./EditForm";
 import { notFound } from "next/navigation";
