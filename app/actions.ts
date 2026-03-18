@@ -3,6 +3,7 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { createRecord, deleteRecord } from "@/lib/records";
 import { randomUUID } from "crypto";
 import { put } from "@vercel/blob";
@@ -78,6 +79,8 @@ export async function createRecordAction(formData: FormData) {
     }
     throw new Error("알 수 없는 오류로 저장에 실패했습니다.");
   }
+  revalidatePath("/");
+  redirect("/");
 }
 
 export async function deleteRecordAction(formData: FormData) {
@@ -93,6 +96,7 @@ export async function deleteRecordAction(formData: FormData) {
     }
     throw new Error("알 수 없는 오류로 삭제에 실패했습니다.");
   }
+  revalidatePath("/");
   redirect("/");
 }
 
