@@ -19,7 +19,6 @@ async function saveUploads(files: File[]) {
     process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
 
   const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
 
   for (const file of files) {
     if (!file || file.size === 0) continue;
@@ -38,10 +37,18 @@ async function saveUploads(files: File[]) {
       continue;
     }
 
+    // Vercel인데 Blob 토큰이 없는 경우 에러 발생
+    if (process.env.VERCEL) {
+      throw new Error(
+        "Vercel 환경에서는 사진 업로드를 위해 Vercel Blob 설정이 필요합니다."
+      );
+    }
+
     // 로컬 개발용: public/uploads에 저장
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const fullPath = path.join(uploadDir, filename);
+    await mkdir(uploadDir, { recursive: true });
     await writeFile(fullPath, buffer);
     urls.push(`/uploads/${filename}`);
   }
@@ -62,7 +69,15 @@ export async function createRecordAction(formData: FormData) {
     throw new Error("필수 항목(날짜/제목/참석자/활동 내용)을 모두 입력해주세요.");
   }
 
-  await createRecord({ meetingDate, title, attendees, content, photoUrls });
+  try {
+    await createRecord({ meetingDate, title, attendees, content, photoUrls });
+  } catch (error) {
+    console.error("Record creation failed:", error);
+    if (error instanceof Error) {
+      throw new Error(`저장 실패: ${error.message}`);
+    }
+    throw new Error("알 수 없는 오류로 저장에 실패했습니다.");
+  }
   redirect("/");
 }
 

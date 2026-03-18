@@ -6,7 +6,7 @@ declare global {
 }
 
 export function getDatabaseUrl(): string | undefined {
-  const url = process.env.DATABASE_URL?.trim();
+  const url = (process.env.DATABASE_URL || process.env.POSTGRES_URL)?.trim();
   if (!url) return undefined;
 
   // 사용자가 예시(.env.local.example)를 그대로 복사한 경우 로컬 저장 모드로 처리
