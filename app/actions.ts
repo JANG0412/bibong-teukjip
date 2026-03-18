@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { createRecord, deleteRecord } from "@/lib/records";
+import { createRecord, deleteRecord } from "@/lib/records.server";
 
 function asString(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v : "";
