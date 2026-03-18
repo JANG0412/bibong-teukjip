@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { getPool } from "./db";
 import { ensureSchema } from "./schema";
-import { localCreateRecord, localListRecords, localDeleteRecord } from "./localStore";
+import { localCreateRecord, localListRecords, localDeleteRecord, localGetRecord, localUpdateRecord } from "./localStore";
 
 export type RecordItem = {
   id: string;
