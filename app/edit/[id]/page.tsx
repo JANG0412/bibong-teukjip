@@ -3,12 +3,11 @@ import { updateRecordAction } from "../../actions";
 import { EditForm } from "./EditForm";
 import { notFound } from "next/navigation";
 
-export default async function EditRecordPage({
-  params,
-}: {
-  params: { id: string };
+export default async function EditRecordPage(props: {
+  params: Promise<{ id: string }>;
 }) {
-  const record = await getRecord(params.id);
+  const { id } = await props.params;
+  const record = await getRecord(id);
 
   if (!record) {
     notFound();

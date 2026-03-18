@@ -9,11 +9,10 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { q?: string };
+export default async function Home(props: {
+  searchParams: Promise<{ q?: string }>;
 }) {
+  const searchParams = await props.searchParams;
   const q = (searchParams.q ?? "").trim();
   let records: RecordItem[] = [];
   let dbError: string | null = null;
