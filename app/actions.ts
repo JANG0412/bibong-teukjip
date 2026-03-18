@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { createRecord, deleteRecord } from "../lib/records.server";
+import { createRecord, deleteRecord, updateRecord } from "@/lib/records.server";
 
 function asString(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v : "";
@@ -50,4 +50,29 @@ export async function deleteRecordAction(formData: FormData) {
   revalidatePath("/");
   redirect("/");
 }
+
+export async function updateRecordAction(formData: FormData) {
+  const id = asString(formData.get("id"));
+  const meetingDate = asString(formData.get("meetingDate")).trim();
+  const title = asString(formData.get("title")).trim();
+  const attendees = asString(formData.get("attendees")).trim();
+  const content = asString(formData.get("content")).trim();
+
+  if (!id || !meetingDate || !title || !attendees || !content) {
+    throw new Error("필수 항목을 모두 입력해주세요.");
+  }
+
+  try {
+    await updateRecord(id, { meetingDate, title, attendees, content });
+  } catch (error) {
+    console.error("Update failed:", error);
+    if (error instanceof Error) {
+      throw new Error(`수정 실패: ${error.message}`);
+    }
+    throw new Error("알 수 없는 오류로 수정에 실패했습니다.");
+  }
+  revalidatePath("/");
+  redirect("/");
+}
+
 

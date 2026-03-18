@@ -44,6 +44,10 @@ export async function localDeleteRecord(id: string) {
 
 export async function localListRecords(q?: string) {
   const all = await readAll();
+  
+  // Sort by meeting_date DESC
+  all.sort((a, b) => b.meeting_date.localeCompare(a.meeting_date));
+
   const keyword = q?.trim();
   if (!keyword) return all;
   const k = keyword.toLowerCase();
@@ -51,5 +55,34 @@ export async function localListRecords(q?: string) {
     (r) =>
       r.title.toLowerCase().includes(k) || r.attendees.toLowerCase().includes(k),
   );
+}
+
+export async function localGetRecord(id: string): Promise<RecordItem | null> {
+  const all = await readAll();
+  return all.find((r) => r.id === id) || null;
+}
+
+export async function localUpdateRecord(
+  id: string,
+  input: {
+    meeting_date?: string;
+    meetingDate?: string;
+    title: string;
+    attendees: string;
+    content: string;
+  },
+) {
+  const all = await readAll();
+  const idx = all.findIndex((r) => r.id === id);
+  if (idx === -1) return;
+
+  all[idx] = {
+    ...all[idx],
+    meeting_date: input.meetingDate || input.meeting_date || all[idx].meeting_date,
+    title: input.title,
+    attendees: input.attendees,
+    content: input.content,
+  };
+  await writeAll(all);
 }
 

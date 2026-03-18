@@ -63,7 +63,7 @@ export async function listRecords(params: { q?: string }): Promise<RecordItem[]>
   await ensureSchema();
   if (!q) {
     const { rows } = await pool.query<RecordItem>(
-      `SELECT * FROM records ORDER BY created_at DESC LIMIT 200`,
+      `SELECT * FROM records ORDER BY meeting_date DESC, created_at DESC LIMIT 200`,
     );
     return rows;
   }
@@ -73,7 +73,7 @@ export async function listRecords(params: { q?: string }): Promise<RecordItem[]>
     `
       SELECT * FROM records
       WHERE title ILIKE $1 OR attendees ILIKE $1
-      ORDER BY created_at DESC
+      ORDER BY meeting_date DESC, created_at DESC
       LIMIT 200
     `,
     [like],
@@ -89,4 +89,42 @@ export async function deleteRecord(id: string): Promise<void> {
   }
 
   await pool.query(`DELETE FROM records WHERE id = $1`, [id]);
+}
+
+export async function getRecord(id: string): Promise<RecordItem | null> {
+  const pool = getPool();
+  if (!pool) return await localGetRecord(id);
+
+  await ensureSchema();
+  const { rows } = await pool.query<RecordItem>(
+    `SELECT * FROM records WHERE id = $1`,
+    [id],
+  );
+  return rows[0] || null;
+}
+
+export async function updateRecord(
+  id: string,
+  input: {
+    meetingDate: string;
+    title: string;
+    attendees: string;
+    content: string;
+  },
+): Promise<void> {
+  const pool = getPool();
+  if (!pool) {
+    await localUpdateRecord(id, input);
+    return;
+  }
+
+  await ensureSchema();
+  await pool.query(
+    `
+      UPDATE records
+      SET meeting_date = $2, title = $3, attendees = $4, content = $5
+      WHERE id = $1
+    `,
+    [id, input.meetingDate, input.title, input.attendees, input.content],
+  );
 }

@@ -114,7 +114,15 @@ export default async function Home({
                     <span className="font-semibold">참석자</span>{" "}
                     <span className="text-zinc-600">{r.attendees}</span>
                   </div>
-                  <DeleteButton id={r.id} />
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/edit/${r.id}`}
+                      className="inline-flex h-8 items-center justify-center rounded-lg bg-white/80 px-3 text-xs font-semibold text-zinc-700 shadow-sm ring-1 ring-zinc-200 transition hover:bg-white active:translate-y-px"
+                    >
+                      수정
+                    </Link>
+                    <DeleteButton id={r.id} />
+                  </div>
                 </div>
               </div>
 
