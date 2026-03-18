@@ -19,6 +19,9 @@ export function DeleteButton({ id }: { id: string }) {
             try {
               await deleteRecordAction(formData);
             } catch (error) {
+              if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
+                return;
+              }
               alert(error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.");
             }
           });
