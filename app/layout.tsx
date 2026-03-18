@@ -36,14 +36,6 @@ export default function RootLayout({
                 </span>
                 <span className="text-sm text-zinc-600">모임 기록</span>
               </a>
-              <nav className="flex items-center gap-2">
-                <a
-                  href="/new"
-                  className="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-600 active:translate-y-px"
-                >
-                  기록하기
-                </a>
-              </nav>
             </div>
           </header>
           <main className="mx-auto w-full max-w-3xl px-4 py-6">
